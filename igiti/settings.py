@@ -24,13 +24,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    "corsheaders",
 
     # AllAuth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'user',
-    'index'
+    'index',
+    'rest_framework',
+    'django_filters',
+    'blog'
 ]
 
 MIDDLEWARE = [
@@ -41,6 +45,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
 ]
 
 ROOT_URLCONF = 'igiti.urls'
@@ -114,6 +123,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR/'static'
 ]
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR/"media"
+
 
 cloudinary.config(cloud_name=config("cloud_name"), api_key=config(
     "api_key"), api_secret=config("api_secret"))
@@ -149,5 +161,13 @@ def ACCOUNT_USER_DISPLAY(user):
 
 # EMAIL:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+SITE_ID = 1
 
 django_heroku.settings(locals())
